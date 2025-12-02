@@ -1,0 +1,53 @@
+---
+alwaysApply: true
+---
+The project uses a multi-layer research documentation structure.
+Follow these document organization rules for all generated files:
+
+The top-level README.md contains only a high-level introduction, project overview, and quick-start instructions.
+Do not place detailed specifications, long explanations, or experimental protocols inside the README.
+
+All detailed documentation must be placed under doc/.
+Use the following structure:
+
+doc/project_overview.md for extended project description
+
+doc/environment_guide.md for environment setup, DGX Spark usage, CUDA notes, uv environment rules, and Cursor development rules
+
+doc/data_guide.md for dataset details (PARA, AADB)
+
+doc/modeling_guide.md for shared VLM/model/hook usage rules
+
+doc/phase0/ for Phase 0 specifications
+
+doc/phase1/ for Phase 1 SAE documentation
+
+doc/phase2/ for Phase 2 Patching documentation
+
+doc/phase3/ for Phase 3 Steering documentation
+
+Notebooks belong in the notebooks/ directory and are used only for exploratory analysis and visualization.
+Do not write design, protocol, or specifications in notebooks.
+
+Source code for each phase must be placed under its phase directory:
+
+Phase0/, Phase1/, Phase2/, Phase3/
+
+Checkpoints, features, activations, intermediate outputs go under models/.
+
+All computation runs on DGX Spark with CUDA GPUs.
+Always assume device = "cuda" and do not generate CPU/MPS fallback branches or Mac-specific execution paths.
+
+The Python environment is managed exclusively with uv on the DGX machine.
+Do not propose or generate conda, poetry, or venv setups.
+
+CUDA version is not fixed yet.
+Phase 0 will determine compatible versions of PyTorch, bitsandbytes, Triton, FlashAttention, etc.
+Do not assume the latest CUDA version in code generation.
+
+Model execution must use local GPU models only.
+Do not use remote API calls (OpenAI/Gemini/etc.).
+Always use from_pretrained() for model loading.
+
+Favor research-oriented code: explicit logic, deterministic seeds, .eval(), torch.no_grad(), and saved activations.
+Avoid production abstractions or unnecessary optimizations.
